@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+   <data>
+         <variable
+          name="Information"
+          type="com.shoppingpad.viewmodel.ContentViewModel">
+         </variable>
+   </data>
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+         <com.github.siyamed.shapeimageview.CircularImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:siRadius="6dp"
+            app:siBorderWidth="2dp"
+            app:siBorderColor="#ea83f268"
+            android:id="@+id/mainIcon"
+            android:src="@drawable/lego"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/displayTitle"
+            android:paddingLeft="20dp"
+            android:text="@{Information.mDisplayName}"
+            android:paddingTop="5dp"
+          android:layout_toRightOf="@id/mainIcon"
+            android:textColor="#000"
+            tools:text="Title"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lastseen"
+            android:text="@{Information.mLastViewDateTime}"
+            android:paddingLeft="20dp"
+            android:paddingTop="27dp"
+            android:textColor="@android:color/black"
+            android:textSize="11dp"
+            android:layout_toEndOf="@id/mainIcon"
+            tools:text="lastseen"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/noOfView"
+            android:text="@{Information.mNumberofViews}"
+            android:paddingTop="5dp"
+            android:textColor="@android:color/darker_gray"
+            android:layout_alignParentRight="true"
+            android:textSize="13dp"
+            tools:text="views"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Views"
+            android:paddingTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/noOfView"
+            android:id="@+id/textView" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/participantsNo"
+            android:text="@{Information.mNumberofParticipants}"
+            android:paddingTop="30dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="13dp"
+            tools:text="participants"
+            />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Participants"
+        android:layout_alignBottom="@+id/participantsNo"
+        android:layout_alignEnd="@+id/textView"/>
+
+    </RelativeLayout>
+</layout>
