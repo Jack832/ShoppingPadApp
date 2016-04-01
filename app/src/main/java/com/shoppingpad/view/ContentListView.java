@@ -1,16 +1,18 @@
 package com.shoppingpad.view;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
 
 import com.shoppingpad.R;
-import com.shoppingpad.oberver.ContentListViewObserver;
 import com.shoppingpad.viewmodel.ContentListViewHandler;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 /**
  * Created by bridgelabz4 on 6/3/16.
@@ -27,7 +29,9 @@ import com.shoppingpad.viewmodel.ContentListViewHandler;
  *
  */
 
-public class ContentListView extends AppCompatActivity {
+public class ContentListView extends AppCompatActivity
+{
+    private Toolbar toolbar;
     //contents ViewModel Attribute.
     ContentListViewHandler mContentListViewHandler;
     //initializing recycler view
@@ -35,29 +39,37 @@ public class ContentListView extends AppCompatActivity {
     //adapter for passing data
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
-    int UserId = 1;
-
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.content_view);
-
+        toolbar= (Toolbar) findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
         mRecyclerView = (RecyclerView) findViewById(R.id.rv1);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        Log.e("pass", "context");
+//      Divider using ItemDecorator
+        mRecyclerView.addItemDecoration(new HorizontalDividerItemDecoration
+                     .Builder(this)
+                     .marginResId(R.dimen.leftMargin,R.dimen.rightMargin)
+                     .sizeResId(R.dimen.divider)
+                     .color(Color.GRAY)
+                     .showLastDivider()
+                     .build());
+        mContentListViewHandler = new ContentListViewHandler(ContentListView.this);
         LoadContentData contentData= new LoadContentData();
         contentData.execute();
+    }
 
-   }
-
-    class LoadContentData extends AsyncTask<Void, Void, Void> {
+    class LoadContentData extends AsyncTask<Void, Void, Void>
+    {
         public ProgressDialog mProgressDialog;
-
         @Override
-        protected void onPreExecute() {
+        protected void onPreExecute()
+        {
             super.onPreExecute();
             mProgressDialog= new ProgressDialog(ContentListView.this);
             mProgressDialog.setMessage("Loading");
@@ -66,21 +78,20 @@ public class ContentListView extends AppCompatActivity {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
-            mContentListViewHandler = new ContentListViewHandler(ContentListView.this);
-//            mContentListViewHandle.getContentViewList();
+        protected Void doInBackground(Void... params)
+        {
+            mContentListViewHandler.getContentViewList();
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void s) {
+        protected void onPostExecute(Void s)
+        {
             super.onPostExecute(s);
-            mProgressDialog.dismiss();
-//            mAdapter = new ContentListAdapter(ContentListView.this,mContentListViewHandler);
-            mAdapter = new BindingAdapter(ContentListView.this,mContentListViewHandler);
-
+            mAdapter = new ContentListAdapter(ContentListView.this,mContentListViewHandler);
             mRecyclerView.setAdapter(mAdapter);
+            mProgressDialog.dismiss();
 
+            }
         }
-    }
 }

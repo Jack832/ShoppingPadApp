@@ -20,11 +20,33 @@ public class ContentViewModel extends BaseObservable
 {
     //class member attributes
     public String   mDisplayName;                  //it holds content name.
-    public int      mDisplayImage;                 //it holds content ThumbView link.
+    public String   mDisplayImage;                 //it holds content ThumbView link.
     public String   mLastViewDateTime;             //it holds content Last seen date and time.
-    public String      mNumberofViews;                // number of views
-    public String      mNumberofParticipants;         //number of participants
+    public String   mNumberOfViews;                // number of views
+    public String   mNumberOfParticipants;         //number of participants
+    public String   mContentId;                    //content Id
 
+    public String getmContentId()
+    {
+        return mContentId;
+    }
+
+    public void setmContentId(String mContentId)
+    {
+        this.mContentId = mContentId;
+    }
+
+    @Bindable
+    public String getmDisplayImage()
+    {
+        return mDisplayImage;
+    }
+
+    public void setmDisplayImage(String mDisplayImage)
+    {
+        this.mDisplayImage = mDisplayImage;
+        notifyPropertyChanged(BR.mDisplayImage);
+    }
 
     @Bindable
     public String getmDisplayName()
@@ -53,24 +75,24 @@ public class ContentViewModel extends BaseObservable
     @Bindable
     public String getmNumberofViews()
     {
-        return mNumberofViews;
+        return mNumberOfViews;
     }
 
-    public void setmNumberofViews(String mNumberofViews)
+    public void setmNumberofViews(String mNumberOfViews)
     {
-        this.mNumberofViews = mNumberofViews;
+        this.mNumberOfViews = mNumberOfViews;
         notifyPropertyChanged(BR.mNumberofViews);
     }
 
     @Bindable
     public String getmNumberofParticipants()
     {
-        return mNumberofParticipants;
+        return mNumberOfParticipants;
     }
 
-    public void setmNumberofParticipants(String mNumberofParticipants)
+    public void setmNumberofParticipants(String mNumberOfParticipants)
     {
-        this.mNumberofParticipants = mNumberofParticipants;
+        this.mNumberOfParticipants = mNumberOfParticipants;
         notifyPropertyChanged(BR.mNumberofParticipants);
     }
 }

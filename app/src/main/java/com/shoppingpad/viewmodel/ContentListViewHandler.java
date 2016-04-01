@@ -8,8 +8,13 @@ import com.shoppingpad.controller.ContentListViewController;
 import com.shoppingpad.model.ContentInfoModel;
 import com.shoppingpad.model.ViewModel;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
 * purpose:
  *
@@ -21,54 +26,34 @@ import java.util.List;
 public class ContentListViewHandler
 {
     //unit test
-    final static boolean mPERFORM_UNIT_TEST = false;
+    final static boolean             mPERFORM_UNIT_TEST = false;
     //hold the content list
-    public List<ContentViewModel> mContentList;
+    public List<ContentViewModel>    mContentList;
     //controller object;
     public ContentListViewController mContentListViewController;
     //contentViewModel Object;
-    ContentViewModel contentViewData;
+    ContentViewModel mContentViewData;
+    //to verify image we are using regex here
+    public static final String Pattern_Image="(bmp|jpg|gif|png)";
 
-     //populating dummy data , checking Unit test Condition
-     //calling Controller
+    //populating dummy data , checking Unit test Condition
+    //calling Controller
     public ContentListViewHandler(Context context)
     {
         mContentList = new ArrayList<>();
         if (mPERFORM_UNIT_TEST)
         {
-            mContentList = populateDummyData();
+            //To Check Working of the Screen using Dummy data
+            // mContentList = populateDummyData();
         }
         else
         {
+            mContentList= new ArrayList<>();
             mContentListViewController = new ContentListViewController(context);
-            mContentList=getContentViewList();
-            Log.d("values of List",""+mContentList.size());
         }
     }
 
-    //initialize the data with required attribute
-    public List<ContentViewModel> populateDummyData()
-    {
-        int icon[]         = {R.drawable.lego, R.drawable.lego};
-        String title[]     = {"Sham", "sam"};
-        String lastSeen[]  = {"12/8/16", "30/1/16"};
-        int participants[] = {45,52};
-        int noofviews[]    = {51,12};
-
-        for (int i = 0; i < icon.length && i < title.length; i++)
-        {
-            ContentViewModel contentViewData  = new ContentViewModel();
-           // contentViewData.mDisplayImage     = icon[i];
-            contentViewData.mDisplayName      = title[i];
-            contentViewData.mLastViewDateTime = lastSeen[i];
-            //contentViewData.mNumberofViews    = noofviews[i];
-            //contentViewData.mNumberofParticipants = participants[i];
-            mContentList.add(contentViewData);
-        }
-        return mContentList;
-    }
-
-     //this will call controller and ask for particular dataLists and
+    //this will call controller and ask for particular dataLists and
     //it also set the data with ViewModelController attribute
     public List<ContentViewModel> getContentViewList()
     {
@@ -77,38 +62,47 @@ public class ContentListViewHandler
         List<ViewModel> contentViewList=mContentListViewController.
                                                   getJsonViewData();
 
-        List<ContentViewModel> contentValues = new ArrayList<>();
-        for(int i=0;i<contentInfoList.size();i++)
+       for(int i=0;i<contentInfoList.size();i++)
        {
-          contentViewData = new ContentViewModel();
-                    //contentViewData.mDisplayImage=contentInfoList.get(i)
-                    //        .mDisplayImageService;
+           mContentViewData = new ContentViewModel();
 
-           contentViewData.setmLastViewDateTime(contentViewList.get(i).mLastViewedDateTime);
-           contentViewData.setmNumberofParticipants(contentViewList.get(i).mParticipants);
-           contentViewData.setmNumberofViews(contentViewList.get(i).mNumberOfViews);
-           contentViewData.setmDisplayName(contentInfoList.get(i).mDisplay_name);
-
-
-           contentViewData.mDisplayName          = contentInfoList.get(i)
-                                                   .mDisplay_name;
-           contentViewData.mNumberofParticipants = contentViewList.get(i)
-                                                   .mParticipants;
-           contentViewData.mLastViewDateTime     =  contentViewList.get(i)
-                                                   .mLastViewedDateTime;
-           contentViewData.mNumberofViews        =  contentViewList.get(i)
-                                                   .mNumberOfViews;
-            //mContentList.add(contentViewData);
-           contentValues.add(contentViewData);
+           boolean imageLink=ImageValidator(contentInfoList.get(i).mImagesLink);
+           if(imageLink)
+           {
+               mContentViewData.setmDisplayImage(contentInfoList.get(i)
+                                                                 .mImagesLink);
+           }
+           else
+           {
+               String image = "https://account.socialbakers.com/default_user.png";
+               mContentViewData.setmDisplayImage(image);
+           }
+           mContentViewData.setmContentId(contentInfoList.get(i).mContent_id);
+           mContentViewData.setmLastViewDateTime(contentViewList.get(i)
+                                                        .mLastViewedDateTime);
+           mContentViewData.setmNumberofParticipants(contentViewList.get(i)
+                                                              .mParticipants);
+           mContentViewData.setmNumberofViews(contentViewList.get(i)
+                                                             .mNumberOfViews);
+           mContentViewData.setmDisplayName(contentInfoList.get(i)
+                                                              .mDisplay_name);
+           mContentList.add(mContentViewData);
        }
+       return mContentList;
+    }
 
-        return contentValues;
+
+    //using regex to check image type is right or not
+    private boolean ImageValidator(String mImagesLink)
+    {
+        Pattern pattern=Pattern.compile(Pattern_Image);
+        Matcher matcher=pattern.matcher(mImagesLink);
+        return matcher.find();
     }
 
     //pass the data for required position
     public ContentViewModel getContentInfoPosition(int position)
     {
-
         return mContentList.get(position);
     }
 

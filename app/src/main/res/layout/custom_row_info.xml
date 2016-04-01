@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="ParticipantInfo"
+            type="com.shoppingpad.viewmodel.ContentInfoDataModel">
+        </variable>
+    </data>
+
+<RelativeLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp">
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:paddingTop="25dp"
+        android:paddingLeft="4dp"
+        android:id="@+id/ParticipantImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:scaleType="fitCenter"
+        app:siRadius="6dp"
+        app:siBorderWidth="1dp"
+        app:siBorderColor="#a3e6a6"
+        app:imageUrl="@{ParticipantInfo.mParticipantIcon}"
+        android:src="@drawable/nehra"
+        android:layout_alignBottom="@+id/ParticipantLastSeen"
+        android:layout_alignParentStart="true" />
+    <TextView
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:layout_toRightOf="@+id/ParticipantImage"
+        android:id="@+id/ParticipantName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:text="@{ParticipantInfo.mParticipantName}"/>
+    <TextView
+        android:id="@+id/ParticipantAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Opened"
+        android:text="@{ParticipantInfo.mParticipantAction}"
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/ParticipantViews"
+        android:layout_toEndOf="@+id/ParticipantImage" />
+    <TextView
+        android:paddingLeft="5dp"
+        android:id="@+id/ParticipantLastSeen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="12/2/16"
+        android:text="@{ParticipantInfo.mParticipantLastSeen}"
+        android:textSize="11dp"
+        android:layout_alignBottom="@+id/ParticipantAction"
+        android:layout_toEndOf="@+id/ParticipantAction" />
+    <TextView
+        android:paddingTop="10dp"
+        android:id="@+id/ParticipantViews"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="views"
+        android:text="@{ParticipantInfo.mParticipantViews}"
+        android:layout_toStartOf="@+id/ShareButton" />
+    <ImageButton
+        android:paddingTop="10dp"
+        android:id="@+id/ShareButton"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:clickable="true"
+        android:background="@drawable/sms"
+        android:layout_alignParentEnd="true" />
+
+
+
+</RelativeLayout>
+</layout>
